@@ -42,12 +42,12 @@ func (m *AnubisMiddleware) Provision(ctx caddy.Context) error {
 	m.logger = ctx.Logger().Named("anubis")
 	m.logger.Info("Anubis middleware provisioning")
 
-	policy, err := libanubis.LoadPoliciesOrDefault("", anubis.DefaultDifficulty)
+	loadedPolicy, err := libanubis.LoadPoliciesOrDefault(ctx, "", anubis.DefaultDifficulty)
 	if err != nil {
 		return err
 	}
 
-	m.AnubisPolicy = policy
+	m.AnubisPolicy = loadedPolicy
 
 	m.AnubisServer, err = libanubis.New(libanubis.Options{
 		Next: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +56,10 @@ func (m *AnubisMiddleware) Provision(ctx caddy.Context) error {
 			if m.Target != nil {
 				http.Redirect(w, r, *m.Target, http.StatusTemporaryRedirect)
 			} else {
-				m.Next.ServeHTTP(w, r)
+				err := m.Next.ServeHTTP(w, r)
+				if err != nil {
+					m.logger.Error("Anubis error when calling Next" + err.Error())
+				}
 			}
 		}),
 		Policy:         m.AnubisPolicy,
