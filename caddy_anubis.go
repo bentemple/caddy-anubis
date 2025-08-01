@@ -88,15 +88,16 @@ func (m *AnubisMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, nex
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 	if r != nil && r.URL != nil && slices.Contains(m.ExcludedPaths, r.URL.Path) {
 		m.logger.Info("Anubis middleware skipping request matching exclude path. Serving directly")
-		err := m.Next.ServeHTTP(w, r)
-		if err != nil {
-			m.logger.Error("Anubis error when calling Next" + err.Error())
-		}
-	} else {
-		m.logger.Info("Anubis middleware sending request")
-		m.Next = next
-		m.AnubisServer.ServeHTTP(w, r)
 	}
+	//	err := m.Next.ServeHTTP(w, r)
+	//	if err != nil {
+	//		m.logger.Error("Anubis error when calling Next" + err.Error())
+	//	}
+	//} else {
+	m.logger.Info("Anubis middleware sending request")
+	m.Next = next
+	m.AnubisServer.ServeHTTP(w, r)
+	//}
 	return nil
 }
 
