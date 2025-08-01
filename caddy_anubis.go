@@ -81,9 +81,12 @@ func (m *AnubisMiddleware) Validate() error {
 
 // ServeHTTP implements caddyhttp.MiddlewareHandler.
 func (m *AnubisMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
-	m.logger.Info("Anubis middleware processing request, path: " + r.URL.Path)
+	m.logger.Info("Anubis middleware processing request")
+	if r != nil && r.URL != nil {
+		m.logger.Info("Request path: " + r.URL.Path)
+	}
 	slog.SetLogLoggerLevel(slog.LevelDebug)
-	if slices.Contains(m.ExcludedPaths, r.URL.Path) {
+	if r != nil && r.URL != nil && slices.Contains(m.ExcludedPaths, r.URL.Path) {
 		m.logger.Info("Anubis middleware skipping request matching exclude path. Serving directly")
 		err := m.Next.ServeHTTP(w, r)
 		if err != nil {
