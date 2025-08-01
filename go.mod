@@ -5,7 +5,7 @@ go 1.24.2
 toolchain go1.24.4
 
 require (
-	github.com/bentemple/anubis v1.21.3-js-2
+	github.com/bentemple/anubis v1.21.3-js-4
 	github.com/caddyserver/caddy/v2 v2.10.0
 	go.uber.org/zap v1.27.0
 )
