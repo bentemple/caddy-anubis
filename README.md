@@ -10,6 +10,8 @@ If you have experience with Caddy plugins, or see obvious issues in my code, fee
 
 - One major issue is the very first request after a Caddy start or restart, takes like 5 seconds till anubis kicks in. All subsequent requests, even after clearing cookies, are near instant.
 
+Note: Anubis removed all node packages installed via npm and during the install process with version 1.16.0. To update to the latest you have to fork anubis and update the .gitignore and remove the exclude `node_modules`. Run `make build` and then commit the new files. I did all that here: https://github.com/bentemple/anubis/commit/eed913867937562e126fd4ab8164da31430e70e0
+
 ## Current usage
 
 Just add an `anubis` to your caddyfile in the block you want the protection. currently I have not seen it work properly inside a `route` or `handler` block. But it works outside of those.
