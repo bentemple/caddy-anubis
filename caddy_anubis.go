@@ -1,9 +1,6 @@
 package caddyanubis
 
 import (
-	"log/slog"
-	"net/http"
-
 	"github.com/bentemple/anubis"
 	libanubis "github.com/bentemple/anubis/lib"
 	"github.com/bentemple/anubis/lib/policy"
@@ -12,6 +9,9 @@ import (
 	"github.com/caddyserver/caddy/v2/caddyconfig/httpcaddyfile"
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
 	"go.uber.org/zap"
+	"log/slog"
+	"net/http"
+	"slices"
 )
 
 func init() {
@@ -21,10 +21,11 @@ func init() {
 }
 
 type AnubisMiddleware struct {
-	Target       *string `json:"target,omitempty"`
-	AnubisPolicy *policy.ParsedConfig
-	AnubisServer *libanubis.Server
-	Next         caddyhttp.Handler
+	Target        *string  `json:"target,omitempty"`
+	ExcludedPaths []string `json:"excluded_paths,omitempty"`
+	AnubisPolicy  *policy.ParsedConfig
+	AnubisServer  *libanubis.Server
+	Next          caddyhttp.Handler
 
 	logger *zap.Logger
 }
@@ -80,11 +81,19 @@ func (m *AnubisMiddleware) Validate() error {
 
 // ServeHTTP implements caddyhttp.MiddlewareHandler.
 func (m *AnubisMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
-	m.logger.Info("Anubis middleware processing request")
+	m.logger.Info("Anubis middleware processing request, path: " + r.URL.Path)
 	slog.SetLogLoggerLevel(slog.LevelDebug)
-	m.logger.Info("Anubis middleware sending request")
-	m.Next = next
-	m.AnubisServer.ServeHTTP(w, r)
+	if slices.Contains(m.ExcludedPaths, r.URL.Path) {
+		m.logger.Info("Anubis middleware skipping request matching exclude path. Serving directly")
+		err := m.Next.ServeHTTP(w, r)
+		if err != nil {
+			m.logger.Error("Anubis error when calling Next" + err.Error())
+		}
+	} else {
+		m.logger.Info("Anubis middleware sending request")
+		m.Next = next
+		m.AnubisServer.ServeHTTP(w, r)
+	}
 	return nil
 }
 
@@ -99,6 +108,11 @@ func (m *AnubisMiddleware) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 			if d.NextArg() {
 				val := d.Val()
 				m.Target = &val
+			}
+		case "exclude":
+			if d.NextArg() {
+				val := d.Val()
+				m.ExcludedPaths = append(m.ExcludedPaths, val)
 			}
 		}
 	}
