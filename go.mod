@@ -4,11 +4,11 @@ go 1.24.2
 
 toolchain go1.24.4
 
-replace github.com/bentemple/anubis => /home/benjamin/development/anubis/
+//replace github.com/bentemple/anubis => /home/benjamin/development/anubis/
 
 require (
-	//github.com/TecharoHQ/anubis v1.15.2
-	github.com/bentemple/anubis v1.21.3-js-6
+	github.com/TecharoHQ/anubis v1.21.3
+	//github.com/bentemple/anubis v1.21.3-js-6
 	github.com/caddyserver/caddy/v2 v2.10.0
 	go.uber.org/zap v1.27.0
 )

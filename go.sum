@@ -50,6 +50,8 @@ github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERo
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
+github.com/TecharoHQ/anubis v1.21.3 h1:AFnLQkxjKzgK2SxuCa5Sp78fFl4NrT0WEvt1mXjBg9k=
+github.com/TecharoHQ/anubis v1.21.3/go.mod h1:MSA2irRy8Mk5OgVZVy1Yw9ArvblZgyIdG+tl6AeGGJM=
 github.com/TecharoHQ/thoth-proto v0.4.0 h1:UbkvfgCku0Dm1R6O4ug3HOsJNnE6F3wB8x+Dpw2lzFI=
 github.com/TecharoHQ/thoth-proto v0.4.0/go.mod h1:IcGnZt3iYUZQVEa0Lwk5l4ix0hCeXlWUV1TJMZvbWx0=
 github.com/a-h/templ v0.3.906 h1:ZUThc8Q9n04UATaCwaG60pB1AqbulLmYEAMnWV63svg=
