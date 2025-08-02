@@ -4,8 +4,11 @@ go 1.24.2
 
 toolchain go1.24.4
 
+replace github.com/bentemple/anubis => /home/benjamin/development/anubis/
+
 require (
-	github.com/bentemple/anubis v1.21.3-js-4
+	//github.com/TecharoHQ/anubis v1.15.2
+	github.com/bentemple/anubis v1.21.3-js-6
 	github.com/caddyserver/caddy/v2 v2.10.0
 	go.uber.org/zap v1.27.0
 )
@@ -47,7 +50,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/ebitengine/purego v0.8.4 // indirect
 	github.com/francoispqt/gojay v1.2.13 // indirect
-	github.com/gaissmai/bart v0.20.5 // indirect
+	github.com/gaissmai/bart v0.23.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
 	github.com/go-kit/kit v0.13.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
