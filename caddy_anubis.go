@@ -62,8 +62,11 @@ func (m *AnubisMiddleware) Provision(ctx caddy.Context) error {
 				}
 			}
 		}),
-		Policy:         m.AnubisPolicy,
-		ServeRobotsTXT: true,
+		CookiePartitioned:   true,
+		CookieDynamicDomain: true,
+		CookieSecure:        true,
+		Policy:              m.AnubisPolicy,
+		ServeRobotsTXT:      true,
 	})
 	if err != nil {
 		return err
